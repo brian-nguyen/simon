@@ -56,7 +56,7 @@ function NoteBox(key, onClick) {
 		this.onClick(this.key);
 		this.play();
 		
-		// Easy task
+		// Easy task - also uncomment the script tag in index.html
 		// KEYS.push(this.key);
 		// console.log(KEYS);
 		// isTimeoutEnabled ? clearTimeout(timeoutRef) : isTimeoutEnabled = true;
@@ -65,8 +65,6 @@ function NoteBox(key, onClick) {
 		// Challenge Task
 		if (this.key == simonKeys[currentIndex]) {
 			userKeys.push(this.key);
-			console.log("User", userKeys);
-
 			currentIndex++;
 
 			if (userKeys.length == simonKeys.length) {
@@ -113,7 +111,6 @@ function addSimon() {
 }
 
 function playSimon() {
-	console.log("Simon", simonKeys);		
 	simonKeys.forEach(function(key, i) {
 		setTimeout(notes[key].play.bind(null, key), i * 500);
 	});
