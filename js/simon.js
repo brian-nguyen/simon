@@ -56,10 +56,31 @@ function NoteBox(key, onClick) {
 		this.onClick(this.key);
 		this.play();
 		
-		KEYS.push(this.key);
-		console.log(KEYS);
-		isTimeoutEnabled ? clearTimeout(timeoutRef) : isTimeoutEnabled = true;
-		timeoutRef = setTimeout(createAndPlayback, 2500);
+		// Easy task
+		// KEYS.push(this.key);
+		// console.log(KEYS);
+		// isTimeoutEnabled ? clearTimeout(timeoutRef) : isTimeoutEnabled = true;
+		// timeoutRef = setTimeout(createAndPlayback, 2500);
+
+		// Challenge Task
+		if (this.key == simonKeys[currentIndex]) {
+			userKeys.push(this.key);
+			console.log("User", userKeys);
+
+			currentIndex++;
+
+			if (userKeys.length == simonKeys.length) {
+				setTimeout(addSimon, 1500);
+				currentIndex = 0;
+			}
+
+		} else {
+			console.log("Game over");
+			setTimeout(restartSimon, 1500);
+			userKeys.length = 0;
+			currentIndex = 0;
+		}
+
 	}.bind(this)
 
 	boxEl.addEventListener('mousedown', this.clickHandler);
@@ -76,15 +97,32 @@ KEYS.forEach(function (key) {
 	notes[key] = new NoteBox(key);
 });
 
-// KEYS.concat(KEYS.slice().reverse()).forEach(function(key, i) {
-// 	setTimeout(notes[key].play.bind(null, key), i * 100);
-// });
-
 /**
  * Challenge Task
  */
-var KEYS = [];
-var USER_KEYS = [];
+var simonKeys = [];
+var userKeys = [];
+var currentIndex = 0;
+
+setTimeout(addSimon, 500);
+
+function addSimon() {
+	userKeys.length = 0;
+	simonKeys.push(KEYS[getRandomIndex()]);
+	playSimon();
+}
+
+function playSimon() {
+	console.log("Simon", simonKeys);		
+	simonKeys.forEach(function(key, i) {
+		setTimeout(notes[key].play.bind(null, key), i * 500);
+	});
+}
+
+function restartSimon() {
+	simonKeys.length = 0;
+	addSimon();
+}
 
 function getRandomIndex() {
 	var idx = Math.random() * 4;
