@@ -56,20 +56,10 @@ function NoteBox(key, onClick) {
 		this.onClick(this.key);
 		this.play();
 		
-		// Record keys pressed
 		KEYS.push(this.key);
-		console.log("Key press detected");
 		console.log(KEYS);
-
-		// If more keys pressed, start the timer over
-		if (isTimeoutEnabled) {
-			clearTimeout(timeoutRef);
-		} else {
-			isTimeoutEnabled = true;
-		}
-		
+		isTimeoutEnabled ? clearTimeout(timeoutRef) : isTimeoutEnabled = true;
 		timeoutRef = setTimeout(createAndPlayback, 2500);
-		
 	}.bind(this)
 
 	boxEl.addEventListener('mousedown', this.clickHandler);
@@ -86,30 +76,17 @@ KEYS.forEach(function (key) {
 	notes[key] = new NoteBox(key);
 });
 
-KEYS.concat(KEYS.slice().reverse()).forEach(function(key, i) {
-	setTimeout(notes[key].play.bind(null, key), i * 100);
-});
+// KEYS.concat(KEYS.slice().reverse()).forEach(function(key, i) {
+// 	setTimeout(notes[key].play.bind(null, key), i * 100);
+// });
 
 /**
- * Easy Task
+ * Challenge Task
  */
-function clearKeys() {
-	KEYS.length = 0;
+var KEYS = [];
+var USER_KEYS = [];
+
+function getRandomIndex() {
+	var idx = Math.random() * 4;
+	return Math.floor(idx);
 }
-
-function createAndPlayback() {
-	console.log("2.5 seconds passed. Playing and clearing keys");
-
-	KEYS.forEach(function(key, i) {
-		setTimeout(notes[key].play.bind(null, key), i * 500);
-	});
-
-	clearKeys();
-	console.log(KEYS);
-
-	isTimeoutEnabled = false;
-}
-
-var timeoutRef;
-var isTimeoutEnabled = false;
-clearKeys();
